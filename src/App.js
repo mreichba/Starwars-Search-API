@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Main from './Main'
+import Search from './Search'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    characters: []
+  };
+  
+  apiCall = (character)=> {
+    fetch(`https://swapi.co/api/people/?search=${character}`)
+    .then((res) => {
+        if (!res.ok)
+            return res.json().then(e => Promise.reject(e));
+        return res.json();
+    })
+    .then((data) => {
+        this.setState({characters: data.results});
+    })
+    .catch(error => {
+        console.error({error});
+    });
+}
+
+handleSearchSubmit = (character) => {
+  this.apiCall(character)
+  
+}
+
+  render(){
+    const people = this.state.characters;
+    // const person = people.map(person => person.name)
+    console.log(people);
+    return (
+      <div>  
+        <Search 
+          search={this.handleSearchSubmit}
+        />
+        <Main people={people} />
+      </div>
+    );
+  }
 }
 
 export default App;
