@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "masons-starwars-search",
+    "alias": "mreichba-masons-starwars-search",
+
+    "routes": [
+        {
+          "src": "^/static/(.*)",
+          "dest": "/static/$1"
+        },
+        {
+          "src": ".*",
+          "dest": "/index.html"
+        }
+    ]
+  }
